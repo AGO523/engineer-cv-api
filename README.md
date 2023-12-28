@@ -1,10 +1,17 @@
-# README
+# engineer cv api
 
-* Starting the web server
-`docker-compose build`
-`docker-compose up`
+## Starting the web server
 
-* Database creation
-`docker-compose exec web rails db:create`
+```shell
+docker-compose build
+```
 
+```shell
+docker-compose up
+```
 
+## Database creation
+
+```shell
+docker-compose run --rm web rails db:create
+```
