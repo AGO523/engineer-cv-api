@@ -1,0 +1,70 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: "read"
+      id-token: "write"
+    env:
+      RAILS_ENV: production
+      REGION: asia-northeast1
+      GOOGLE_PROJECT_ID: ${{ github.ref_name == 'main' && secrets.GCP_PROJECT_ID }}
+      DOCKER_BUILDKIT: 1
+      SERVICE_ACCOUNT_EMAIL: ${{ github.ref_name == 'main' && secrets.SERVICE_ACCOUNT_EMAIL }}
+      PROJECT_NUMBER: ${{ github.ref_name == 'main' && secrets.PROJECT_NUMBER }}
+      SERVICE_NAME: engineer-cv-api
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ env.GOOGLE_PROJECT_ID }}
+
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: projects/${{ env.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.POOL_ID }}/providers/${{ secrets.PROVIDER_ID }}
+          service_account: ${{ env.SERVICE_ACCOUNT_EMAIL }}
+          create_credentials_file: true
+
+      - name: Authenticate using the created credentials file
+        run: |-
+          gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}" --project="${{ env.GOOGLE_PROJECT_ID }}"
+
+      - name: Register gcloud as a Docker credential
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Set environment variables
+        run: |
+          export RAILS_DOCKER_REPOSITORY=${{ env.REGION }}-docker.pkg.dev/${{ env.GOOGLE_PROJECT_ID }}/creal-rails-docker-repository
+          echo "RAILS_REPOSITORY=$RAILS_DOCKER_REPOSITORY" >> $GITHUB_ENV
+
+      - name: Build an image from a Dockerfile
+        run: |
+          docker pull ${RAILS_REPOSITORY}/rails:latest || :
+          docker build \
+            --cache-from=${RAILS_REPOSITORY}/rails:latest \
+            --build-arg BUILDKIT_INLINE_CACHE=1 \
+            --build-arg RAILS_ENV=${RAILS_ENV} \
+            --build-arg RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
+            --build-arg BUNDLE_RUBYGEMS__PKG__GITHUB__COM=${{ secrets.BUNDLE_RUBYGEMS__PKG__GITHUB__COM }} \
+            --tag ${RAILS_REPOSITORY}/rails:${GITHUB_SHA} .
+          docker tag ${RAILS_REPOSITORY}/rails:${GITHUB_SHA} ${RAILS_REPOSITORY}/rails:latest
+
+      - name: Push an image or a repository to a registry
+        run: |
+          docker push ${RAILS_REPOSITORY}/rails:${GITHUB_SHA}
+          docker push ${RAILS_REPOSITORY}/rails:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${SERVICE_NAME} --image ${RAILS_REPOSITORY}/rails:${GITHUB_SHA} --region ${REGION} --platform managed
