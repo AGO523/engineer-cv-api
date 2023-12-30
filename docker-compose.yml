@@ -23,6 +23,12 @@ services:
       - "3000:3000"
     depends_on:
       - db
-  
+    environment:
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_SSL_MODE: ${DATABASE_SSL_MODE}
+
 volumes:
   mysql_data:
