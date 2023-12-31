@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     branches:
-      - main
+      - feat/add-action-yml
 
 jobs:
   deploy:
