@@ -32,9 +32,9 @@ jobs:
         name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
         with:
-          workload_identity_provider: projects/${{ env.PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.POOL_ID }}/providers/${{ secrets.PROVIDER_ID }}
-          service_account: ${{ env.SERVICE_ACCOUNT_EMAIL }}
-          create_credentials_file: true
+          project_id: ${{ env.GOOGLE_PROJECT_ID }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+          export_default_credentials: true
 
       - name: Authenticate using the created credentials file
         run: |-
