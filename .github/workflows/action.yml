@@ -14,10 +14,10 @@ jobs:
     env:
       RAILS_ENV: production
       REGION: asia-northeast1
-      GOOGLE_PROJECT_ID: secrets.GCP_PROJECT_ID
+      GOOGLE_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       DOCKER_BUILDKIT: 1
-      SERVICE_ACCOUNT_EMAIL: secrets.SERVICE_ACCOUNT_EMAIL
-      PROJECT_NUMBER: secrets.PROJECT_NUMBER
+      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      PROJECT_NUMBER: ${{ secrets.PROJECT_NUMBER }}
       SERVICE_NAME: engineer-cv-api
     timeout-minutes: 10
 
