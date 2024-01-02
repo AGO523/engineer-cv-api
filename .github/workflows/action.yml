@@ -16,7 +16,7 @@ jobs:
       REGION: asia-northeast1
       GOOGLE_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
       DOCKER_BUILDKIT: 1
-      SERVICE_ACCOUNT_EMAIL: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
       PROJECT_NUMBER: ${{ secrets.PROJECT_NUMBER }}
       SERVICE_NAME: engineer-cv-api
     timeout-minutes: 10
@@ -32,7 +32,7 @@ jobs:
         name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.SERVICE_ACCOUNT_EMAIL }} # TODO: change to secrets.GCP_SA_KEY
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Authenticate using the created credentials file
         run: |-
