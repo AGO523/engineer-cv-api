@@ -2,9 +2,7 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   # allow requests from *.run.app for cloud run
-  config.hosts = [
-    /.*\.run\.app/
-  ]
+  config.hosts = [ENV["CLIENT_BASE_URL"]].compact
 
   # Settings specified here will take precedence over those in config/application.rb.
 
