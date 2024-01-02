@@ -10,5 +10,6 @@ COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle install
 COPY . /app
 
-EXPOSE 3000
-CMD ["rails", "server", "-b", "0.0.0.0"]
+ENV PORT=3000
+EXPOSE $PORT
+CMD ./bin/rails server -p $PORT
