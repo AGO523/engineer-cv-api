@@ -4,9 +4,8 @@ services:
   db:
     image: mysql:8.2.0
     environment:
-      MYSQL_USER: user
-      MYSQL_ROOT_PASSWORD: pass
-      MYSQL_DATABASE: appdb
+      MYSQL_ROOT_PASSWORD: J25WEY98d4GH1uDx
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "3306:3306"
     volumes:
@@ -24,11 +23,10 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_USERNAME: ${DATABASE_USERNAME}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_NAME: ${DATABASE_NAME}
-      DATABASE_HOST: ${DATABASE_HOST}
-      DATABASE_SSL_MODE: ${DATABASE_SSL_MODE}
+      DATABASE_USERNAME: root
+      DATABASE_PASSWORD: J25WEY98d4GH1uDx
+      DATABASE_NAME: cv_development
+      DATABASE_HOST: db
       CLIENT_BASE_URL: ${CLIENT_BASE_URL}
 
 volumes:
