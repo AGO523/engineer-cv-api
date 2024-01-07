@@ -23,6 +23,7 @@ jobs:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      CLIENT_BASE_URL: ${{ secrets.CLIENT_BASE_URL }}
     timeout-minutes: 10
 
     steps:
@@ -90,3 +91,4 @@ jobs:
             --update-env-vars DATABASE_NAME=${{ secrets.DATABASE_NAME }} \
             --update-env-vars RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
             --update-env-vars RAILS_ENV=${RAILS_ENV}
+            --update-env-vars CLIENT_BASE_URL=${{ secrets.CLIENT_BASE_URL }} \
