@@ -65,7 +65,9 @@ jobs:
 
       - name: Run database migrations
         run: |
-          docker run --rm rails db:migrate
+          docker run --rm \
+          ${RAILS_REPOSITORY}/api:${GITHUB_SHA} \
+          rails db:migrate
 
       - name: Push an image or a repository to a registry
         run: |
