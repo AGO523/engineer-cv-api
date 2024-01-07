@@ -24,7 +24,6 @@ jobs:
       DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
       DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
       DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     timeout-minutes: 10
 
     steps:
@@ -71,7 +70,6 @@ jobs:
           -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
           -e DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
           -e DATABASE_NAME=${{ secrets.DATABASE_NAME }} \
-          -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
           ${RAILS_REPOSITORY}/api:${GITHUB_SHA} \
           rails db:migrate
 
@@ -90,6 +88,5 @@ jobs:
             --update-env-vars DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
             --update-env-vars DATABASE_HOST=${{ secrets.DATABASE_HOST }} \
             --update-env-vars DATABASE_NAME=${{ secrets.DATABASE_NAME }} \
-            --update-env-vars DATABASE_URL=${{ secrets.DATABASE_URL }} \
             --update-env-vars RAILS_MASTER_KEY=${{ secrets.RAILS_MASTER_KEY }} \
             --update-env-vars RAILS_ENV=${RAILS_ENV}
