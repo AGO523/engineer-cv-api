@@ -3,7 +3,8 @@ name: deploy
 on:
   push:
     branches:
-      - main
+      # - main
+      - feature/modify-api-settings
 
 jobs:
   deploy:
