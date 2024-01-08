@@ -1,8 +1,10 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # TODO: change URL settings
-  config.hosts = [ENV["CLIENT_BASE_URL"]].compact
+  allowed_host = ENV['CLIENT_BASE_URL'].gsub(/https?:\/\//, '')
+  p "####################################################"
+  p "allowed_host: #{allowed_host}"
+  config.hosts << allowed_host
 
   # Settings specified here will take precedence over those in config/application.rb.
 
