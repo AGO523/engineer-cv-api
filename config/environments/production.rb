@@ -1,10 +1,8 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  allowed_host = ENV['CLIENT_BASE_URL'].gsub(/https?:\/\//, '')
-  p "####################################################"
-  p "allowed_host: #{allowed_host}"
-  config.hosts << allowed_host
+  # TODO: settings for production
+  config.hosts.clear
 
   # Settings specified here will take precedence over those in config/application.rb.
 
