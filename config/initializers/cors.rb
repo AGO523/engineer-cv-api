@@ -1,8 +1,6 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     allowed_origins = ["localhost:3030", ENV["CLIENT_BASE_URL"]].compact
-    p "####################################################"
-    p "allowed_origins: #{allowed_origins}"
     origins allowed_origins
 
     resource "*",
