@@ -1,10 +1,9 @@
 require "active_support/core_ext/integer/time"
+require 'uri'
 
 Rails.application.configure do
-  # TODO: change URL settings
-  config.hosts = [ENV["CLIENT_BASE_URL"]].compact
-
   # Settings specified here will take precedence over those in config/application.rb.
+  config.hosts << ENV['CLIENT_HOST']
 
   # Code is not reloaded between requests.
   config.enable_reloading = false
