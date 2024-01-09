@@ -2,11 +2,7 @@ require "active_support/core_ext/integer/time"
 require 'uri'
 
 Rails.application.configure do
-  # TODO: settings for production
-  # config.hosts.clear
-  host = URI.parse(ENV['CLIENT_BASE_URL']).host
-  config.hosts << host
-
+  config.hosts << ENV['CLIENT_HOST']
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
